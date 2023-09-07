@@ -96,7 +96,7 @@ namespace DepotDownloader
                 }
             }
 
-            ContentDownloader.Config.InstallDirectory = GetParameter<string>(args, "-dir");
+            ContentDownloader.Config.InstallDirectory = GetCleanPath(GetParameter<string>(args, "-dir"));
 
             ContentDownloader.Config.VerifyAll = HasParameter(args, "-verify-all") || HasParameter(args, "-verify_all") || HasParameter(args, "-validate");
             ContentDownloader.Config.MaxServers = GetParameter(args, "-max-servers", 20);
@@ -301,6 +301,15 @@ namespace DepotDownloader
             }
 
             return ContentDownloader.InitializeSteam3(username, password);
+        }
+
+        static string GetCleanPath(string path)
+        {
+            foreach (var invalidChar in Path.GetInvalidPathChars())
+            {
+                path = path.Replace(invalidChar.ToString(), "");
+            }
+            return path;
         }
 
         static int IndexOfParam(string[] args, string param)
