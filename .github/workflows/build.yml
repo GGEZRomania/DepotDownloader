@@ -39,9 +39,12 @@ jobs:
       - name: Publish Windows-x64
         run: dotnet publish --configuration Release -p:PublishSingleFile=true -p:DebugType=embedded --self-contained --runtime win-x64 --output selfcontained-win-x64
 
+      - name: Zip windows-x64
+        run: zip -j DepotDownloader-Windows-x64.zip selfcontained-win-x64/DepotDownloader.exe cs2-download.bat
+
       - name: Upload Windows-x64
         run:
-          gh release upload ${GITHUB_REF##*/} selfcontained-win-x64/DepotDownloader.exe
+          gh release upload ${GITHUB_REF##*/} DepotDownloader-Windows-x64.zip
         env:
           GH_TOKEN: ${{ github.token }}
           GH_REF: ${{ github.ref }}
