@@ -1027,8 +1027,8 @@ namespace DepotDownloader
                 oldManifestFile = oldProtoManifest.Files.SingleOrDefault(f => f.FileName == file.FileName);
             }
 
-            var fileFinalPath = Path.Combine(depot.installDir, file.FileName);
-            var fileStagingPath = Path.Combine(stagingDir, file.FileName);
+            var fileFinalPath = GetCleanPath(Path.Combine(depot.installDir, file.FileName));
+            var fileStagingPath = GetCleanPath(Path.Combine(stagingDir, file.FileName));
 
             // This may still exist if the previous run exited before cleanup
             if (File.Exists(fileStagingPath))
@@ -1206,6 +1206,15 @@ namespace DepotDownloader
             }
         }
 
+        private static string GetCleanPath(string path)
+        {
+            foreach (var invalidChar in Path.GetInvalidPathChars())
+            {
+                path = path.Replace(invalidChar.ToString(), "");
+            }
+            return path;
+        }
+
         private static async Task DownloadSteam3AsyncDepotFileChunk(
             CancellationTokenSource cts, uint appId,
             GlobalDownloadCounter downloadCounter,
@@ -1292,7 +1301,7 @@ namespace DepotDownloader
 
                 if (fileStreamData.fileStream == null)
                 {
-                    var fileFinalPath = Path.Combine(depot.installDir, file.FileName);
+                    var fileFinalPath = GetCleanPath(Path.Combine(depot.installDir, file.FileName));
                     fileStreamData.fileStream = File.Open(fileFinalPath, FileMode.Open);
                 }
 
@@ -1328,7 +1337,7 @@ namespace DepotDownloader
 
             if (remainingChunks == 0)
             {
-                var fileFinalPath = Path.Combine(depot.installDir, file.FileName);
+                var fileFinalPath = GetCleanPath(Path.Combine(depot.installDir, file.FileName));
                 Console.WriteLine("{0,6:#00.00}% {1}", (sizeDownloaded / (float)depotDownloadCounter.CompleteDownloadSize) * 100.0f, fileFinalPath);
             }
         }
