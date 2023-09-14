@@ -16,15 +16,15 @@ CD /d ..
 :: Find manifest files
 for /r %%x in (%MANIFEST_DIR%/*) do (
 	Echo.%%x | findstr /C:"2347770">nul && (
-		set MANIFEST_2347770="%%x"
+		set MANIFEST_2347770="%%~nx"
 		echo "Found manifest for 2347770"
 	)
 	Echo.%%x | findstr /C:"2347771">nul && (
-		set MANIFEST_2347771="%%x"
+		set MANIFEST_2347771="%%~nx"
 		echo "Found manifest for 2347771"
 	)
 	Echo.%%x | findstr /C:"2347774">nul && (
-		set MANIFEST_2347774="%%x"
+		set MANIFEST_2347774="%%~nx"
 		echo "Found manifest for 2347774"
 	)
 )
