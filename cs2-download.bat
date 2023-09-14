@@ -1,7 +1,7 @@
 @echo off
 
 set MANIFEST_DIR=counterstrike-2-manifests
-set CS2_PATH="C:\Users\Cs2ZE\Downloads\DepotDownloader\CS2"
+set CS2_PATH="CS2"
 
 :: Clone manifests repo
 if not exist %MANIFEST_DIR% (
